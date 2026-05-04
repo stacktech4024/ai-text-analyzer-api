@@ -12,6 +12,7 @@ from contextlib import asynccontextmanager
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.models import AnalysisResponse, CaptionResponse, TagsResponse, TextInput
 from app.services.analyzer import TextAnalyzerService
@@ -47,6 +48,18 @@ app = FastAPI(
     ),
     version="1.0.0",
     lifespan=lifespan,
+)
+
+# CORS – permissive defaults for demo/development.
+# NOTE: allow_credentials=True requires an explicit origin list in production;
+# browsers reject credentialed requests to a wildcard origin.
+# Replace ["*"] with your actual frontend origin(s) before going live.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
